@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: boardwall_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: boardwall
+      POSTGRES_PASSWORD: boardwall123
+      POSTGRES_DB: boardwall
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - boardwall_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: boardwall_backend
+    restart: unless-stopped
+    environment:
+      # Update this with your Supabase connection string
+      DATABASE_URL: postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      JWT_EXPIRES_IN: 24h
+      REFRESH_TOKEN_SECRET: your-super-secret-refresh-token-key-change-in-production
+      REFRESH_TOKEN_EXPIRES_IN: 7d
+      PORT: 3001
+      NODE_ENV: production
+    ports:
+      - '3001:3001'
+    # Remove postgres dependency when using Supabase
+    # depends_on:
+    #   - postgres
+    networks:
+      - boardwall_network
+    command: sh -c "npx prisma db push --accept-data-loss && npm run start:prod"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: boardwall_frontend
+    restart: unless-stopped
+    ports:
+      - '3000:80'
+    depends_on:
+      - backend
+    networks:
+      - boardwall_network
+
+volumes:
+  postgres_data:
+
+networks:
+  boardwall_network:
+    driver: bridge
