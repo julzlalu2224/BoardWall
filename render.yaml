@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: boardwall-backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install && npx prisma generate && npm run build
+    startCommand: cd backend && npm run start:prod
+    rootDir: .
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://boardwall:boardwall123@localhost:5432/boardwall
+      - key: JWT_SECRET
+        value: your-super-secret-jwt-key-change-in-production
+      - key: JWT_EXPIRES_IN
+        value: 24h
+      - key: REFRESH_TOKEN_SECRET
+        value: your-super-secret-refresh-token-key-change-in-production
+      - key: REFRESH_TOKEN_EXPIRES_IN
+        value: 7d
+      - key: PORT
+        value: "10000"
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_URL
+        value: https://board-wall.vercel.app/

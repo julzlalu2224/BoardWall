@@ -6,7 +6,7 @@ WORKDIR /app
 RUN apk add --no-cache openssl openssl-dev libc6-compat
 
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --include=dev
 
 COPY . .
 RUN npx prisma generate
@@ -20,7 +20,7 @@ WORKDIR /app
 RUN apk add --no-cache openssl libc6-compat
 
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
@@ -28,4 +28,4 @@ COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 3001
 
-CMD ["node", "dist/main"]
+CMD ["npm", "run", "start:prod"]CMD ["node", "dist/main"]
