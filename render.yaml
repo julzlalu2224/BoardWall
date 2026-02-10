@@ -8,7 +8,9 @@ services:
     rootDir: .
     envVars:
       - key: DATABASE_URL
-        value: postgresql://boardwall:boardwall123@localhost:5432/boardwall
+        fromDatabase:
+          name: boardwall-db
+          property: connectionString
       - key: JWT_SECRET
         value: your-super-secret-jwt-key-change-in-production
       - key: JWT_EXPIRES_IN
@@ -23,3 +25,7 @@ services:
         value: production
       - key: FRONTEND_URL
         value: https://board-wall.vercel.app/
+
+  - type: pgsql
+    name: boardwall-db
+    plan: free
