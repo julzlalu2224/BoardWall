@@ -8,7 +8,7 @@ services:
     rootDir: .
     envVars:
       - key: DATABASE_URL
-        value: ""  # Set this to your Supabase connection string in Render dashboard
+        value: "postgresql://postgres.vbjwizvmtgmixbtzqsur:KendrickLmao69!@aws-1-ap-northeast-2.pooler.supabase.com:6543/postgres"  # Set this to your Supabase connection string in Render dashboard
       - key: JWT_SECRET
         value: your-super-secret-jwt-key-change-in-production
       - key: JWT_EXPIRES_IN
