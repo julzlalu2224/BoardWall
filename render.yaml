@@ -3,7 +3,7 @@ services:
     name: boardwall-backend
     env: node
     plan: free
-    buildCommand: cd backend && npm ci && npm run build
+    buildCommand: cd backend && npm ci --include=dev && npm run build
     startCommand: cd backend && npx prisma migrate deploy && npm run start:prod
     rootDir: .
     envVars:
