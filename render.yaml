@@ -3,12 +3,12 @@ services:
     name: boardwall-backend
     env: node
     plan: free
-    buildCommand: cd backend && npm ci && npx prisma generate && npx prisma migrate deploy && npm run build
-    startCommand: cd backend && npm run start:prod
+    buildCommand: cd backend && npm ci && npm run build
+    startCommand: cd backend && npx prisma migrate deploy && npm run start:prod
     rootDir: .
     envVars:
       - key: DATABASE_URL
-        value: "postgresql://postgres.vbjwizvmtgmixbtzqsur:KendrickLmao69!@aws-1-ap-northeast-2.pooler.supabase.com:6543/postgres"  # Set this to your Supabase connection string in Render dashboard
+        value: "postgresql://postgres:KendrickLmao69!@db.vbjwizvmtgmixbtzqsur.supabase.co:5432/postgres"  # Set this to your Supabase connection string in Render dashboard
       - key: JWT_SECRET
         value: your-super-secret-jwt-key-change-in-production
       - key: JWT_EXPIRES_IN
